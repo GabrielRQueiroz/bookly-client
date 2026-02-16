@@ -1,5 +1,7 @@
 packages:
   - .
+
 ignoredBuiltDependencies:
+  - electron
   - sharp
   - unrs-resolver

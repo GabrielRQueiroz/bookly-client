@@ -1,30 +1,29 @@
 'use client';
 
-import { LoadingOverlay, Modal } from '@mantine/core';
+import { Modal } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
-import { useRouter } from 'next/navigation';
-import { EstantesFormulario } from '../../EstantesFormulario';
+import { redirect } from 'next/navigation';
+import { FormularioEstantes } from '../../components/FormularioEstantes';
 
 export default function PaginaNovaEstante() {
   const [opened, { close }] = useDisclosure(true);
-  const router = useRouter();
 
   const handleClose = () => {
-    router.back();
     close();
+    redirect('/estantes');
   };
 
   return (
     <Modal
       opened={opened}
       onClose={handleClose}
-      title="Nova Estante"
+      title="Criar uma estante"
       size="md"
-      pos="relative"
+      padding="lg"
+      autoFocus
       centered
     >
-      <LoadingOverlay visible={false} zIndex={1000} overlayProps={{ radius: "sm", blur: 2 }} />
-      <EstantesFormulario />
+      <FormularioEstantes onSucess={close} />
     </Modal>
   );
 }

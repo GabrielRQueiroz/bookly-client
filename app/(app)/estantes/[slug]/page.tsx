@@ -1,41 +1,64 @@
-import { GridEstante } from '@/components/GridEstante';
-import { ListaEstante, ListaEstanteLegado } from '@/components/ListaEstante';
-import { Estante } from '@/lib/definitions';
-import { Title } from '@mantine/core';
+import { GridEstante } from '@/app/(app)/estantes/components/GridEstante';
+import { ListaEstante } from '@/app/(app)/estantes/components/ListaEstante';
+import { BotaoVoltar } from '@/components/BotaoVoltar';
+import { Estante, estantesApi } from '@/lib/api';
+import { getUsuario } from '@/lib/dal';
+import { getNicho } from '@/lib/utils';
+import { Group, Title } from '@mantine/core';
+import { AcoesEstante } from '../components/AcoesEstante';
+import { AcoesNicho } from '../components/AcoesNicho';
+import { MembrosEstante } from '../components/MembrosEstante';
+import { EstanteContextProvider } from '../contexts/EstanteContext';
 
-export default function PaginaEstante() {
-  const estante: Estante = {
-    id: '1',
-    nome: 'Estante da Sala',
-    linhas: 4,
-    colunas: 5,
-    livros: [
-      { id: '1', titulo: 'Clean Code', linha: 1, coluna: 1 },
-      { id: '2', titulo: 'Domain Driven Design', linha: 2, coluna: 3 },
-      { id: '3', titulo: 'O Poder do Hábito', linha: 1, coluna: 1 },
-      { id: '4', titulo: 'Refatoração', linha: 1, coluna: 1 },
-      { id: '5', titulo: 'O Andar do Bêbado', linha: 1, coluna: 1 },
-      { id: '6', titulo: 'Sapiens', linha: 1, coluna: 1 },
-    ],
-  };
+export default async function PaginaEstante({
+  params,
+}: {
+  params: Promise<{ slug: string }>;
+}) {
+  const { slug } = await params;
+  const usuario = await getUsuario();
+  const estante: Estante | undefined = await estantesApi.buscarPorId(slug);
+  const dono = estante?.donos.some((d) => d.id === usuario?.id) ?? false;
+
+  if (!estante) {
+    return null;
+  }
 
   return (
-    <div>
-      <Title order={1} mb={8}>
-        {estante.nome}
-      </Title>
+    <EstanteContextProvider
+      data={estante.livros.map((livro) => ({
+        id: livro.id,
+        titulo: livro.titulo,
+        autores: livro.autores.map((a) => a.nome),
+        editora: livro.editora.nome,
+        generos: livro.generos,
+        nicho: getNicho(livro.linha, livro.coluna),
+      }))}
+    >
+      <BotaoVoltar href="/estantes" />
 
-      <GridEstante
-        linhas={estante.linhas}
-        colunas={estante.colunas}
-        livros={estante.livros}
-      />
+      <Group gap={8}>
+        <Title order={1} className="text-2xl" mb={8}>
+          {estante.nome}
+        </Title>
+        <MembrosEstante
+          usuarios={{
+            donos: estante.donos,
+            membros: estante.membros,
+          }}
+        />
+        {dono && <AcoesEstante estante={estante} />}
+      </Group>
 
-      <Title order={2} mt={16} mb={8}>
+      <GridEstante estante={estante} dono={dono} />
+
+      {dono && <AcoesNicho />}
+
+      <Title order={2} className="text-lg" mt={16} mb={8}>
         Livros na estante
       </Title>
 
-      <ListaEstante livros={estante.livros} />
-    </div>
+      <ListaEstante />
+    </EstanteContextProvider>
   );
 }

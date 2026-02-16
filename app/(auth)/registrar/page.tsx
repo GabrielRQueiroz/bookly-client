@@ -1,77 +1,133 @@
 'use client';
 
-import { registrar } from '@/app/lib/actions/auth';
-import { Button } from 'primereact/button';
-import { InputText } from 'primereact/inputtext';
-import { Password } from 'primereact/password';
-import { useState } from 'react';
+import {
+  Anchor,
+  Box,
+  Button,
+  Center,
+  Paper,
+  PasswordInput,
+  Text,
+  TextInput,
+} from '@mantine/core';
+import { IconCheck, IconX } from '@tabler/icons-react';
+import Link from 'next/link';
+import { useActionState, useState } from 'react';
+import { FormRegistrar, registrar } from '../actions';
 
-const PaginaRegistro = () => {
-  const [nome, setNome] = useState('');
-  const [email, setEmail] = useState('');
-  const [senha, setSenha] = useState('');
-  const [senhaRepetida, setSenhaRepetida] = useState('');
-
+function PasswordRequirement({
+  meets,
+  label,
+}: {
+  meets: boolean;
+  label: string;
+}) {
   return (
-    <main>
-      <form action={registrar} method="POST">
-        <div className="flex flex-wrap align-items-center mb-3 gap-2">
-          <label className="p-hidden-accessible" htmlFor="nome">
-            Nome de usuário
-          </label>
-          <InputText
-            id="nome"
-            name="nome"
-            value={nome}
-            placeholder="Nome de usuário"
-            required
-            onChange={(e) => setNome(e.target.value)}
-          />
-        </div>
-
-        <div className="flex flex-wrap align-items-center mb-3 gap-2">
-          <label className="p-hidden-accessible" htmlFor="email">
-            E-mail
-          </label>
-          <InputText
-            id="email"
-            name="email"
-            value={email}
-            placeholder="E-mail"
-            required
-            onChange={(e) => setEmail(e.target.value)}
-          />
-        </div>
-
-        <div className="flex flex-wrap align-items-center mb-3 gap-2">
-          <label className="p-hidden-accessible" htmlFor="senha">
-            Senha
-          </label>
-          <Password
-            id="senha"
-            name="senha"
-            value={senha}
-            required
-            onChange={(e) => setSenha(e.target.value)}
-          />
-        </div>
-
-        <div className="flex flex-wrap align-items-center mb-3 gap-2">
-          <label className="p-hidden-accessible" htmlFor="senhaRepetida">
-            Confirmar senha
-          </label>
-          <Password
-            id="senhaRepetida"
-            name="senhaRepetida"
-            value={senhaRepetida}
-            required
-            onChange={(e) => setSenhaRepetida(e.target.value)}
-          />
-        </div>
-        <Button type="submit" label="Registrar" />
-      </form>
-    </main>
+    <Text component="div" c={meets ? 'teal' : 'red'} mt={5} size="sm">
+      <Center inline>
+        {meets ? (
+          <IconCheck size={14} stroke={1.5} />
+        ) : (
+          <IconX size={14} stroke={1.5} />
+        )}
+        <Box ml={7}>{label}</Box>
+      </Center>
+    </Text>
   );
+}
+
+const iniitalData: {
+  data: FormRegistrar;
+  errors: Record<string, string>;
+} = {
+  data: { apelido: '', email: '', senha: '', senhaConfirmacao: '' },
+  errors: {},
 };
 
-export default PaginaRegistro;
+export default function PaginaRegistrar() {
+  const [{ data, errors }, formAction, pending] = useActionState(
+    registrar,
+    iniitalData,
+  );
+  const [apelido, setApelido] = useState(data.apelido);
+  const [email, setEmail] = useState(data.email);
+  const [senha, setSenha] = useState(data.senha);
+  const [senhaConfirmacao, setSenhaConfirmacao] = useState(
+    data.senhaConfirmacao,
+  );
+
+  return (
+    <>
+      <Text className="text-sm text-center text-gray-500 mt-2">
+        Já tem uma conta?{' '}
+        <Anchor href="/login" component={Link}>
+          Entrar
+        </Anchor>
+      </Text>
+
+      <Paper
+        component={'form'}
+        action={formAction}
+        withBorder
+        shadow="sm"
+        p={22}
+        mt={30}
+        radius="md"
+      >
+        <TextInput
+          label="Apelido"
+          name="apelido"
+          placeholder="Seu apelido"
+          required
+          radius="md"
+          value={apelido}
+          onChange={(e) => setApelido(e.currentTarget.value)}
+          error={errors?.apelido ? errors.apelido.errors.join(', ') : undefined}
+        />
+
+        <TextInput
+          label="Email"
+          name="email"
+          placeholder="email@provedor.com"
+          required
+          radius="md"
+          mt="md"
+          value={email}
+          onChange={(e) => setEmail(e.currentTarget.value)}
+          error={errors?.email ? errors.email.errors.join(', ') : undefined}
+        />
+
+        <PasswordInput
+          value={senha}
+          onChange={(e) => setSenha(e.currentTarget.value)}
+          placeholder="Sua senha"
+          label="Senha"
+          name="senha"
+          radius="md"
+          required
+          mt="md"
+          error={errors?.senha ? errors.senha.errors.join(', ') : undefined}
+        />
+
+        <PasswordInput
+          label="Confirmação de senha"
+          name="senhaConfirmacao"
+          placeholder="Confirme sua senha"
+          radius="md"
+          required
+          mt="md"
+          value={senhaConfirmacao}
+          onChange={(e) => setSenhaConfirmacao(e.currentTarget.value)}
+          error={
+            errors?.senhaConfirmacao
+              ? errors.senhaConfirmacao.errors.join(', ')
+              : undefined
+          }
+        />
+        <Button type="submit" fullWidth mt="xl" radius="md" loading={pending}>
+          Registrar
+        </Button>
+      </Paper>
+    </>
+  );
+}

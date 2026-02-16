@@ -1,6 +1,15 @@
 'use client';
 
-import { Burger, Button, Drawer, Group, NavLink, Tooltip } from '@mantine/core';
+import { logout } from '@/app/(auth)/actions';
+import {
+  Burger,
+  Button,
+  Divider,
+  Drawer,
+  Group,
+  NavLink,
+  Tooltip,
+} from '@mantine/core';
 import { useDisclosure, useMediaQuery } from '@mantine/hooks';
 import {
   IconBook2,
@@ -26,8 +35,8 @@ type SidebarItem = {
 };
 
 const itens: SidebarItem[] = [
-  { icon: IconBook2, label: 'Livros', href: '/livros' },
   { icon: IconBooks, label: 'Estantes', href: '/estantes' },
+  { icon: IconBook2, label: 'Livros', href: '/livros' },
   { icon: IconUsers, label: 'Amigos', href: '/amigos' },
   { icon: IconSettings, label: 'Configurações', href: '/configuracoes' },
 ];
@@ -43,8 +52,12 @@ export const Sidebar = () => {
     setActiveLink(currentItem ? currentItem.label : itens[0].label);
   }, [pathname]);
 
+  const handleLogout = async () => {
+    await logout();
+  };
+
   // =============================
-  // MOBILE → Drawer fullscreen
+  // MOBILE
   // =============================
   if (isMobile) {
     return (
@@ -77,7 +90,7 @@ export const Sidebar = () => {
             leftSection={<IconLogout size={20} />}
             className="mt-auto"
             fullWidth
-            onClick={close}
+            onClick={handleLogout}
           >
             Sair
           </Button>
@@ -94,20 +107,19 @@ export const Sidebar = () => {
       className={`
         left-0 top-0 h-full bg-white shadow-md z-40
         transition-all duration-300
-        relative
-        ${opened ? 'w-72' : 'w-16'}
+        sticky
+        ${opened ? 'min-w-64 w-64' : 'min-w-16 w-16'}
         flex flex-col
       `}
     >
       {/* Navigation */}
-      <Group
-        justify=""
-        className="m-1 p-3 border-b overflow-hidden flex-nowrap border-gray-300"
-      >
+      <Group justify="" className="p-4 overflow-hidden flex-nowrap">
         <Burger opened={opened} onClick={toggle} size="sm" />
       </Group>
 
-      <Group className="p-2 space-y-0" gap="xs" justify="flex-start">
+      <Divider />
+
+      <Group className="px-2 py-3 space-y-0" gap="xs" justify="flex-start">
         {itens.map((item) => {
           const link = (
             <NavLink
@@ -117,8 +129,8 @@ export const Sidebar = () => {
               leftSection={<item.icon size={24} />}
               label={item.label}
               active={activeLink === item.label}
-              pr="0"
-              className="justify-center h-10"
+              pr={0}
+              className="justify-center h-10 rounded-sm font-semibold"
             />
           );
 
@@ -147,7 +159,7 @@ export const Sidebar = () => {
             fullWidth
             leftSection={<IconLogout size={24} />}
             className="pr-0!"
-            onClick={close}
+            onClick={handleLogout}
           >
             Sair
           </Button>

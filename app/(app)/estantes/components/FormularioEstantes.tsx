@@ -1,8 +1,15 @@
 'use client';
 
-import { Button, Group, NumberInput, TextInput } from '@mantine/core';
-import { useState } from 'react';
+import {
+  Button,
+  Group,
+  LoadingOverlay,
+  NumberInput,
+  TextInput,
+} from '@mantine/core';
+import { useState, useTransition } from 'react';
 import { z } from 'zod';
+import { criarEstante } from '../actions';
 
 const schema = z.object({
   nome: z.string().min(3, 'Nome deve ter pelo menos 3 caracteres'),
@@ -10,14 +17,16 @@ const schema = z.object({
   colunas: z.number().min(1, 'Mínimo 1 coluna').max(50, 'Máximo 50 colunas'),
 });
 
-export const EstantesFormulario = () => {
+export const FormularioEstantes = ({ onSucess }: { onSucess: () => void }) => {
   const [nome, setNome] = useState('');
-  const [fileiras, setFileiras] = useState<number | string>(4);
-  const [colunas, setColunas] = useState<number | string>(5);
+  const [fileiras, setFileiras] = useState<number | string>(1);
+  const [colunas, setColunas] = useState<number | string>(1);
   const [errors, setErrors] = useState<Record<string, string>>({});
-  const [loading, setLoading] = useState(false);
+  const [isPending, startTransition] = useTransition();
 
-  const handleSubmit = async () => {
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+
     setErrors({});
 
     const result = schema.safeParse({
@@ -37,25 +46,24 @@ export const EstantesFormulario = () => {
       return;
     }
 
-    try {
-      setLoading(true);
-
-      // 🔥 Aqui você chamará seu backend depois
-      console.log('Criando estante:', result.data);
-
-      // Simulação
-      await new Promise((resolve) => setTimeout(resolve, 800));
-
-      alert('Estante criada com sucesso!');
-    } catch (error) {
-      console.error(error);
-    } finally {
-      setLoading(false);
-    }
+    startTransition(() => {
+      criarEstante({
+        nome,
+        linhas: Number(fileiras),
+        colunas: Number(colunas),
+      });
+      onSucess();
+    });
   };
 
   return (
-    <div className="space-y-4">
+    <form className="space-y-4" onSubmit={handleSubmit}>
+      <LoadingOverlay
+        visible={isPending}
+        zIndex={1000}
+        overlayProps={{ radius: 'sm', blur: 2 }}
+      />
+
       <TextInput
         label="Nome da Estante"
         placeholder="Ex: Estante da Sala"
@@ -86,9 +94,9 @@ export const EstantesFormulario = () => {
         />
       </Group>
 
-      <Button fullWidth onClick={handleSubmit} loading={loading}>
+      <Button fullWidth type="submit" loading={isPending}>
         Criar Estante
       </Button>
-    </div>
+    </form>
   );
 };

@@ -1,17 +1,4 @@
-export type Livro = {
-  id: string;
-  titulo: string;
-  linha: number;
-  coluna: number;
-};
-
-export type Estante = {
-  id: string;
-  nome: string;
-  linhas: number;
-  colunas: number;
-  livros: Livro[];
-}
+import { Livro } from './api';
 
 export type Nicho = {
   id: string;
@@ -19,4 +6,14 @@ export type Nicho = {
   linha: number;
   coluna: number;
   livros?: Livro[];
-}
+};
+
+export type SessionPayload = {
+  user: {
+    id: string;
+    nome: string;
+    email: string;
+  };
+  token: string;
+  expiresAt: Date;
+};

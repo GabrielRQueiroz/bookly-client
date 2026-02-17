@@ -56,6 +56,16 @@ export async function criar(
   };
 }
 
+export async function refreshToken(
+  refreshToken: string,
+): Promise<{ access_token: string }> {
+  await delay();
+  if (refreshToken !== 'fake-refresh-token') {
+    throw new ApiError('Refresh token inválido', 401);
+  }
+  return { access_token: 'fake-token' };
+}
+
 export async function listar(): Promise<Usuario[]> {
   await delay();
   const db = await readDb();

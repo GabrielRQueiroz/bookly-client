@@ -1,4 +1,5 @@
 import { config } from '../config';
+import { getAccessToken } from '../dal';
 import { http } from '../http';
 import * as mock from '../mocks/usuarios.mock';
 
@@ -53,6 +54,20 @@ export const usuariosApi = {
     });
   },
 
+  refreshToken: async (
+    refreshToken: string,
+  ): Promise<{
+    access_token: string;
+  }> => {
+    if (config.useMock) return mock.refreshToken(refreshToken);
+    return http<{
+      access_token: string;
+    }>('auth/refresh', {
+      method: 'POST',
+      body: { refreshToken },
+    });
+  },
+
   listar: async (): Promise<Usuario[]> => {
     if (config.useMock) return mock.listar();
     return http<Usuario[]>('/usuarios');
@@ -70,6 +85,9 @@ export const usuariosApi = {
       method: 'PUT',
       body: data,
       credentials: 'include',
+      headers: {
+        authorization: `Bearer ${await getAccessToken()}`,
+      },
     });
   },
 
@@ -78,6 +96,9 @@ export const usuariosApi = {
     await http(`/usuarios/${id}`, {
       method: 'DELETE',
       credentials: 'include',
+      headers: {
+        authorization: `Bearer ${await getAccessToken()}`,
+      },
     });
   },
 
@@ -89,6 +110,9 @@ export const usuariosApi = {
     await http(`/usuarios/${usuarioId}/estantes/${estanteId}`, {
       method: 'POST',
       credentials: 'include',
+      headers: {
+        authorization: `Bearer ${await getAccessToken()}`,
+      },
     });
   },
 
@@ -100,6 +124,9 @@ export const usuariosApi = {
     await http(`/usuarios/${usuarioId}/estantes/${estanteId}`, {
       method: 'DELETE',
       credentials: 'include',
+      headers: {
+        authorization: `Bearer ${await getAccessToken()}`,
+      },
     });
   },
 
@@ -107,6 +134,9 @@ export const usuariosApi = {
     if (config.useMock) return mock.listarUsuariosPorEstante(estanteId);
     return http<Usuario[]>(`/usuarios/estantes/${estanteId}`, {
       credentials: 'include',
+      headers: {
+        authorization: `Bearer ${await getAccessToken()}`,
+      },
     });
   },
 };

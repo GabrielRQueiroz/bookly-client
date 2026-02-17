@@ -1,4 +1,5 @@
 import { config } from '../config';
+import { getAccessToken } from '../dal';
 import { http } from '../http';
 import * as mock from '../mocks/generos.mock';
 
@@ -13,6 +14,9 @@ export const generosApi = {
     if (config.useMock) return mock.listar();
     return http<Genero[]>('/generos', {
       credentials: 'include',
+      headers: {
+        authorization: `Bearer ${await getAccessToken()}`,
+      },
     });
   },
 
@@ -21,6 +25,9 @@ export const generosApi = {
     return http<Genero>('/generos', {
       method: 'POST',
       credentials: 'include',
+      headers: {
+        authorization: `Bearer ${await getAccessToken()}`,
+      },
       body: data,
     });
   },
@@ -29,6 +36,9 @@ export const generosApi = {
     if (config.useMock) return mock.buscarPorId(id);
     return http<Genero>(`/generos/${id}`, {
       credentials: 'include',
+      headers: {
+        authorization: `Bearer ${await getAccessToken()}`,
+      },
     });
   },
 
@@ -36,6 +46,9 @@ export const generosApi = {
     if (config.useMock) return mock.remover(id);
     await http(`/generos/${id}`, {
       credentials: 'include',
+      headers: {
+        authorization: `Bearer ${await getAccessToken()}`,
+      },
       method: 'DELETE',
     });
   },
@@ -45,6 +58,9 @@ export const generosApi = {
     return http<Genero>(`/generos/${id}`, {
       method: 'PUT',
       credentials: 'include',
+      headers: {
+        authorization: `Bearer ${await getAccessToken()}`,
+      },
       body: data,
     });
   },

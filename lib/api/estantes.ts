@@ -1,5 +1,6 @@
 import { Usuario } from '../api';
 import { config } from '../config';
+import { getAccessToken } from '../dal';
 import { http } from '../http';
 import * as mock from '../mocks/estantes.mock';
 import { Livro } from './livros';
@@ -22,6 +23,9 @@ export const estantesApi = {
     if (config.useMock) return mock.listar();
     return http<Estante[]>(`/estante`, {
       credentials: 'include',
+      headers: {
+        authorization: `Bearer ${await getAccessToken()}`,
+      },
       next: {
         tags: ['estantes'],
       },
@@ -36,6 +40,9 @@ export const estantesApi = {
       method: 'POST',
       body: data,
       credentials: 'include',
+      headers: {
+        authorization: `Bearer ${await getAccessToken()}`,
+      },
       next: {
         tags: ['estantes'],
       },
@@ -46,6 +53,9 @@ export const estantesApi = {
     if (config.useMock) return mock.buscarPorId(id);
     return http<Estante>(`/estante/${id}`, {
       credentials: 'include',
+      headers: {
+        authorization: `Bearer ${await getAccessToken()}`,
+      },
       next: {
         tags: ['estantes'],
       },
@@ -60,6 +70,9 @@ export const estantesApi = {
     return http<Estante>(`/estante/${id}`, {
       method: 'PUT',
       credentials: 'include',
+      headers: {
+        authorization: `Bearer ${await getAccessToken()}`,
+      },
       body: data,
       next: {
         tags: ['estantes'],
@@ -72,6 +85,9 @@ export const estantesApi = {
     await http(`/estante/${id}`, {
       method: 'DELETE',
       credentials: 'include',
+      headers: {
+        authorization: `Bearer ${await getAccessToken()}`,
+      },
       next: {
         tags: ['estantes'],
       },

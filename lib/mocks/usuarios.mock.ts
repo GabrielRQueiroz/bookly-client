@@ -4,6 +4,14 @@ import { readDb, writeDb } from './db';
 
 const delay = () => new Promise((r) => setTimeout(r, 400));
 
+const USUARIO_MOCK_ID = '1771213522449';
+
+export async function getUsuario(): Promise<Usuario | null> {
+  await delay();
+  const db = await readDb();
+  return db.usuarios.find((u: Usuario) => u.id === USUARIO_MOCK_ID) || null;
+}
+
 export async function login(
   email: string,
   senha: string,
@@ -23,6 +31,7 @@ export async function login(
 export async function criar(
   nome: string,
   email: string,
+  senha: string,
 ): Promise<{ user: Usuario; accessToken: string }> {
   await delay();
   const db = await readDb();
@@ -32,6 +41,7 @@ export async function criar(
     email,
     avatarUrl: null,
     estantes: [],
+    senha,
   };
   db.usuarios.push(novo);
   await writeDb(db);
@@ -129,5 +139,7 @@ export async function listarUsuariosPorEstante(
 ): Promise<Usuario[]> {
   await delay();
   const db = await readDb();
-  return db.usuarios.filter((u: Usuario) => u.estantes.some((e) => e.id === estanteId));
+  return db.usuarios.filter((u: Usuario) =>
+    u.estantes.some((e) => e.id === estanteId),
+  );
 }

@@ -1,7 +1,6 @@
 import { Livro } from './api';
 
 export type Nicho = {
-  id: string;
   estanteId: string;
   linha: number;
   coluna: number;

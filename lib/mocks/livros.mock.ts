@@ -1,6 +1,6 @@
-import { Estante, Usuario } from '../api';
-import type { Livro } from '../api/livros';
-import { getUsuario } from '../dal';
+import { Autor, Editora, Estante, Genero, Usuario } from '../api';
+import type { CriarLivro, Livro } from '../api/livros';
+import { getUsuario } from '../mocks/usuarios.mock';
 import { readDb, writeDb } from './db';
 
 function delay() {
@@ -43,37 +43,77 @@ export async function listarOutros(): Promise<Livro[]> {
   return livros;
 }
 
-export async function criar(
-  data: Omit<Livro, 'id'> & {
-    estanteId: string;
-    coluna: number;
-    linha: number;
-  },
-): Promise<Livro> {
+export async function criar(data: CriarLivro): Promise<Livro> {
   await delay();
   const user = await getUsuario();
   const db = await readDb();
 
-  const estante = db.estantes.find((e: Estante) => e.id === data.estanteId);
+  if (data.estante) {
+    const estante = db.estantes.find((e: Estante) => e.id === data.estante?.id);
 
-  if (!estante) {
-    throw new Error('Estante não encontrada');
-  }
-  if (!estante.donos.some((d: Usuario) => d.id === user?.id)) {
-    throw new Error(
-      'Usuário não tem permissão para adicionar livros nessa estante',
-    );
+    if (!estante) {
+      throw new Error('Estante não encontrada');
+    }
+    if (!estante.donos.some((d: Usuario) => d.id === user?.id)) {
+      throw new Error(
+        'Usuário não tem permissão para adicionar livros nessa estante',
+      );
+    }
   }
 
-  const novo = { id: Date.now().toString(), ...data };
+  const editora = db.editoras.find((e: Editora) => e.id === data.editoraId);
+  if (!editora) {
+    throw new Error('Editora não encontrada');
+  }
+
+  const autores = db.autores.filter((a: Autor) =>
+    data.autoresId.includes(a.id),
+  );
+
+  console.log('Autores encontrados:', autores);
+  console.log('Autores informados:', data.autoresId);
+  
+  if (autores.length !== data.autoresId.length) {
+    throw new Error('Algum autor não encontrado');
+  }
+
+  const generos = db.generos.filter((g: Genero) =>
+    data.generosId.includes(g.id),
+  );
+  
+  if (generos.length !== data.generosId.length) {
+    throw new Error('Algum gênero não encontrado');
+  }
+
+  const { titulo } = data;
+
+  const novo = {
+    id: Date.now().toString(),
+    titulo,
+    autores,
+    generos,
+    editora,
+  };
 
   db.livros.push(novo);
-  db.estantes = db.estantes.map((e: Estante) => {
-    if (e.id === data.estanteId) {
-      return { ...e, livros: [...e.livros, novo] };
-    }
-    return e;
-  });
+
+  if (data.estante)
+    db.estantes = db.estantes.map((e: Estante) => {
+      if (e.id === data.estante?.id) {
+        return {
+          ...e,
+          livros: [
+            ...e.livros,
+            {
+              ...novo,
+              coluna: data.estante?.coluna || 1,
+              linha: data.estante?.linha || 1,
+            },
+          ],
+        };
+      }
+      return e;
+    });
 
   await writeDb(db);
   return novo;

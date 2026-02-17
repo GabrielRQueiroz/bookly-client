@@ -2,39 +2,15 @@
 
 import {
   Anchor,
-  Box,
   Button,
-  Center,
   Paper,
   PasswordInput,
   Text,
   TextInput,
 } from '@mantine/core';
-import { IconCheck, IconX } from '@tabler/icons-react';
 import Link from 'next/link';
 import { useActionState, useState } from 'react';
 import { FormRegistrar, registrar } from '../actions';
-
-function PasswordRequirement({
-  meets,
-  label,
-}: {
-  meets: boolean;
-  label: string;
-}) {
-  return (
-    <Text component="div" c={meets ? 'teal' : 'red'} mt={5} size="sm">
-      <Center inline>
-        {meets ? (
-          <IconCheck size={14} stroke={1.5} />
-        ) : (
-          <IconX size={14} stroke={1.5} />
-        )}
-        <Box ml={7}>{label}</Box>
-      </Center>
-    </Text>
-  );
-}
 
 const iniitalData: {
   data: FormRegistrar;

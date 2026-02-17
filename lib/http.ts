@@ -23,6 +23,9 @@ export async function http<T>(
     },
     body: body ? JSON.stringify(body) : undefined,
     cache: cache ?? 'no-cache',
+    next: {
+      tags: endpoint.split('/').filter((e) => e.length > 0),
+    },
     ...fetchOptions,
   });
 

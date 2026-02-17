@@ -52,7 +52,7 @@ export default async function PaginaEstante({
 
       <GridEstante estante={estante} dono={dono} />
 
-      {dono && <AcoesNicho />}
+      {dono && <AcoesNicho estanteId={estante.id} />}
 
       <Title order={2} className="text-lg" mt={16} mb={8}>
         Livros na estante

@@ -12,41 +12,30 @@ import {
 } from '@mantine/core';
 import { notifications } from '@mantine/notifications';
 import Link from 'next/link';
-import { useState, useTransition } from 'react';
-import { z } from 'zod';
-import { login } from '../actions';
+import { useActionState, useEffect, useState } from 'react';
+import { login, LoginState } from '../actions';
 
-const schema = z.object({
-  email: z.string(),
-  senha: z.string(),
-});
+const initialState: LoginState = {
+  data: { email: '', senha: '' },
+};
 
 export default function PaginaLogin() {
-  const [isPending, startTransition] = useTransition();
-  const [email, setEmail] = useState('');
-  const [senha, setSenha] = useState('');
+  const [{ data, errors, notification }, formAction, pending] = useActionState(
+    login,
+    initialState,
+  );
+  const [email, setEmail] = useState(data.email);
+  const [senha, setSenha] = useState(data.senha);
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-
-    const parseResult = schema.safeParse({
-      email,
-      senha,
-    });
-
-    if (!parseResult.success) {
+  useEffect(() => {
+    if (notification) {
       notifications.show({
-        title: 'Erro',
-        message: 'Por favor, preencha todos os campos corretamente.',
-        color: 'red',
+        title: notification.title,
+        message: notification.message,
+        color: notification.color,
       });
-      return;
     }
-
-    startTransition(async () => {
-      await login(email, senha);
-    });
-  };
+  }, [data]);
 
   return (
     <>
@@ -59,7 +48,7 @@ export default function PaginaLogin() {
 
       <Paper
         component={'form'}
-        onSubmit={handleSubmit}
+        action={formAction}
         withBorder
         shadow="sm"
         p={22}
@@ -68,28 +57,34 @@ export default function PaginaLogin() {
       >
         <TextInput
           label="Email"
+          name="email"
           placeholder="email@provedor.com"
           required
           radius="md"
           value={email}
           onChange={(e) => setEmail(e.currentTarget.value)}
+          error={errors?.email ? errors.email.errors.join(', ') : null}
         />
         <PasswordInput
           label="Senha"
+          name="senha"
           placeholder="Sua senha"
           required
           mt="md"
           radius="md"
           value={senha}
           onChange={(e) => setSenha(e.currentTarget.value)}
+          error={errors?.senha ? errors.senha.errors.join(', ') : null}
         />
+
         <Group justify="space-between" mt="lg">
           <Checkbox label="Lembrar de mim" />
           <Anchor component="button" size="sm">
             Esqueceu a senha?
           </Anchor>
         </Group>
-        <Button type="submit" fullWidth mt="xl" radius="md" loading={isPending}>
+
+        <Button type="submit" fullWidth mt="xl" radius="md" loading={pending}>
           Entrar
         </Button>
       </Paper>

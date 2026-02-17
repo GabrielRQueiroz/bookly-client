@@ -2,9 +2,9 @@
 
 import { Usuario } from '../api';
 import { Estante } from '../api/estantes';
-import { getUsuario } from '../dal';
 import { ApiError } from '../errors';
 import { readDb, writeDb } from './db';
+import { getUsuario } from './usuarios.mock';
 
 const delay = () => new Promise((r) => setTimeout(r, 400));
 

@@ -7,6 +7,20 @@ import z from 'zod';
 
 export type FormRegistrar = z.infer<typeof schemaRegistrar>;
 
+export type FormLogin = z.infer<typeof schemaLogin>;
+
+export type RegistrarState = {
+  data: FormRegistrar;
+  errors?: { [key: string]: string };
+  notification?: { title: string; message: string; color: string };
+};
+
+export type LoginState = {
+  data: FormLogin;
+  errors?: Record<string, any>;
+  notification?: { title: string; message: string; color: string };
+};
+
 const schemaRegistrar = z
   .object({
     apelido: z.string().min(3, 'O apelido deve ter pelo menos 3 caracteres'),
@@ -36,14 +50,12 @@ export async function registrar(previousState: any, formData: FormData) {
     senhaConfirmacao: formData.get('senhaConfirmacao'),
   });
 
-  console.log(camposValidados);
-  
   if (!camposValidados.success) {
     const errors = z.treeifyError(camposValidados.error).properties;
     return {
       data: camposValidados.data ?? {
-        apelido: '',
-        email: '',
+        apelido: previousState?.data?.apelido ?? '',
+        email: previousState?.data?.email ?? '',
         senha: '',
         senhaConfirmacao: '',
       },
@@ -60,9 +72,22 @@ export async function registrar(previousState: any, formData: FormData) {
       camposValidados.data.senha,
     );
   } catch (error) {
-    throw new Error(
-      error instanceof Error ? error.message : 'Erro ao registrar usuário',
-    );
+    return {
+      data: {
+        apelido: camposValidados.data.apelido,
+        email: camposValidados.data.email,
+        senha: '',
+        senhaConfirmacao: '',
+      },
+      notification: {
+        title: 'Não foi possível criar a conta',
+        message:
+          error instanceof Error
+            ? error.message
+            : 'Ocorreu um erro ao criar a conta',
+        color: 'red',
+      },
+    };
   }
 
   await criarSessao(response.user, response.accessToken);
@@ -70,15 +95,45 @@ export async function registrar(previousState: any, formData: FormData) {
   redirect('/');
 }
 
-export async function login(email: string, senha: string) {
+export async function login(
+  previousState: any,
+  formData: FormData,
+): Promise<LoginState> {
+  const camposValidados = schemaLogin.safeParse({
+    email: formData.get('email'),
+    senha: formData.get('senha'),
+  });
+
+  if (!camposValidados.success) {
+    const errors = z.treeifyError(camposValidados.error).properties;
+    return {
+      data: camposValidados.data ?? {
+        email: previousState?.data?.email ?? '',
+        senha: '',
+      },
+      errors,
+    };
+  }
+
+  const { email, senha } = camposValidados.data;
+
   let response;
   try {
     const res = await usuariosApi.login(email, senha);
     response = res;
   } catch (error) {
-    throw new Error(
-      error instanceof Error ? error.message : 'Erro ao fazer login',
-    );
+    return {
+      data: {
+        email,
+        senha: '',
+      },
+      notification: {
+        title: 'Não foi possível fazer o login',
+        message:
+          error instanceof Error ? error.message : 'Email ou senha inválidos',
+        color: 'red',
+      },
+    };
   }
 
   await criarSessao(response.user, response.accessToken);

@@ -1,3 +1,4 @@
+import { PromptPWA } from '@/components/PromptPWA';
 import {
   ColorSchemeScript,
   createTheme,
@@ -60,6 +61,7 @@ export default function RootLayout({
       >
         <div className="flex h-screen w-full bg-gray-50 overflow-y-auto">
           <MantineProvider theme={theme}>
+            <PromptPWA />
             <Notifications position="top-center" />
             {children}
           </MantineProvider>

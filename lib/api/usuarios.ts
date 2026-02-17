@@ -30,7 +30,7 @@ export const usuariosApi = {
     email: string,
     senha: string,
   ): Promise<{ user: Usuario; accessToken: string }> => {
-    if (config.useMock) return mock.criar(nome, email);
+    if (config.useMock) return mock.criar(nome, email, senha);
     return http<{ user: Usuario; accessToken: string }>('auth/registrar', {
       method: 'POST',
       body: { nome, email, senha },

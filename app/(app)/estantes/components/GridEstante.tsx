@@ -61,8 +61,6 @@ export const GridEstante = ({
 
     if (onCellClick) {
       onCellClick(linha, coluna);
-    } else {
-      console.log(`Célula clicada: ${getLetraLinha(linha)}${coluna}`);
     }
   };
 

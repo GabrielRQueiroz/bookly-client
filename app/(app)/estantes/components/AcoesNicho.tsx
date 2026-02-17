@@ -1,49 +1,37 @@
 'use client';
 
-import { Button, Group, Tooltip } from '@mantine/core';
-import { IconDeselect, IconEdit, IconPlus } from '@tabler/icons-react';
+import { Nicho } from '@/lib/definitions';
+import { getLinhaColuna } from '@/lib/utils';
+import { Button, Group, Modal } from '@mantine/core';
+import { useDisclosure } from '@mantine/hooks';
+import { IconEdit, IconPlus } from '@tabler/icons-react';
 import { useEffect, useState } from 'react';
+import { FormularioLivro } from '../../livros/components/FormularioLivro';
 import { useEstanteContext } from '../contexts/EstanteContext';
 
-export const AcoesNicho = () => {
-  const { filtros, setFiltroNicho } = useEstanteContext();
-  const [nichoSelecionado, setNichoSelecionado] = useState<string | null>(null);
+export const AcoesNicho = ({ estanteId }: { estanteId: string }) => {
+  const [nichoSelecionado, setNichoSelecionado] = useState<Nicho | undefined>();
+  const { filtros } = useEstanteContext();
 
   useEffect(() => {
-    if (filtros.length > 0) {
-      const nichoFiltro = filtros.find((filtro) => filtro.id === 'nicho');
-      if (nichoFiltro && typeof nichoFiltro.value === 'string') {
-        setNichoSelecionado(nichoFiltro.value);
-      } else {
-        setNichoSelecionado(null);
-      }
+    if (filtros.some((filtro) => filtro.id === 'nicho')) {
+      const coordenada = filtros.find((filtro) => filtro.id === 'nicho')
+        ?.value as string;
+      const { linha, coluna } = getLinhaColuna(coordenada);
+      const nicho: Nicho = {
+        estanteId,
+        linha,
+        coluna,
+      };
+      setNichoSelecionado(nicho);
     } else {
-      setNichoSelecionado(null);
+      setNichoSelecionado(undefined);
     }
   }, [filtros]);
 
   return (
-    <Group wrap="nowrap" py={12}>
-      <Tooltip label="Limpar seleção">
-        <Button
-          size="sm"
-          variant="outline"
-          color="gray"
-          disabled={!nichoSelecionado}
-          onClick={() => setFiltroNicho(-1, -1)}
-        >
-          <IconDeselect size={20} />
-        </Button>
-      </Tooltip>
-      <Button
-        size="sm"
-        leftSection={<IconPlus size={20} />}
-        disabled={!nichoSelecionado}
-        variant="light"
-        color="blue"
-      >
-        Adicionar livro
-      </Button>
+    <Group w="fit-content" mx="auto" py={16}>
+      <AdicionarLivro nicho={nichoSelecionado} disabled={!nichoSelecionado} />
       <Button
         size="sm"
         leftSection={<IconEdit size={20} />}
@@ -54,5 +42,33 @@ export const AcoesNicho = () => {
         Editar
       </Button>
     </Group>
+  );
+};
+
+const AdicionarLivro = ({
+  nicho,
+  disabled,
+}: {
+  nicho?: Nicho;
+  disabled: boolean;
+}) => {
+  const [opened, { open, close }] = useDisclosure(false);
+
+  return (
+    <>
+      <Button
+        size="sm"
+        leftSection={<IconPlus size={20} />}
+        disabled={disabled || !nicho}
+        variant="light"
+        color="blue"
+        onClick={open}
+      >
+        Adicionar livro
+      </Button>
+      <Modal opened={opened && !!nicho} onClose={close} title="Adicionar livro">
+        <FormularioLivro nicho={nicho} />
+      </Modal>
+    </>
   );
 };

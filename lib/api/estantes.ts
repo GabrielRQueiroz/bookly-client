@@ -22,6 +22,9 @@ export const estantesApi = {
     if (config.useMock) return mock.listar();
     return http<Estante[]>(`/estantes`, {
       credentials: 'include',
+      next: {
+        tags: ['estantes']
+      }
     });
   },
 
@@ -33,6 +36,9 @@ export const estantesApi = {
       method: 'POST',
       body: data,
       credentials: 'include',
+      next: {
+        tags: ['estantes']
+      }
     });
   },
 
@@ -40,6 +46,9 @@ export const estantesApi = {
     if (config.useMock) return mock.buscarPorId(id);
     return http<Estante>(`/estantes/${id}`, {
       credentials: 'include',
+      next: {
+        tags: ['estantes']
+      }
     });
   },
 
@@ -52,6 +61,9 @@ export const estantesApi = {
       method: 'PUT',
       credentials: 'include',
       body: data,
+      next: {
+        tags: ['estantes']
+      }
     });
   },
 
@@ -60,6 +72,9 @@ export const estantesApi = {
     await http(`/estantes/${id}`, {
       method: 'DELETE',
       credentials: 'include',
+      next: {
+        tags: ['estantes']
+      }
     });
   },
 };

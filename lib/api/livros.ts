@@ -13,11 +13,26 @@ export type Livro = {
   editora: Editora;
 };
 
+export type CriarLivro = {
+  titulo: string;
+  autoresId: string[];
+  generosId: string[];
+  editoraId: string;
+  estante?: {
+    id: string;
+    coluna: number;
+    linha: number;
+  };
+};
+
 export const livrosApi = {
   listarSeus: async (): Promise<Livro[]> => {
     if (config.useMock) return mock.listarMeus();
     return http<Livro[]>(`/livros/meus`, {
       credentials: 'include',
+      next: {
+        tags: ['livros']
+      }
     });
   },
 
@@ -25,19 +40,23 @@ export const livrosApi = {
     if (config.useMock) return mock.listarOutros();
     return http<Livro[]>(`/livros/outros`, {
       credentials: 'include',
+      next: {
+        tags: ['livros']
+      }
     });
   },
 
-  criar: async (data: Omit<Livro, 'id'> & {
-    estanteId: string;
-    coluna: number;
-    linha: number;
-  }): Promise<Livro> => {
+  criar: async (
+    data: CriarLivro,
+  ): Promise<Livro> => {
     if (config.useMock) return mock.criar(data);
     return http<Livro>('/livros', {
       method: 'POST',
       credentials: 'include',
       body: data,
+      next: {
+        tags: ['livros']
+      }
     });
   },
 
@@ -46,6 +65,9 @@ export const livrosApi = {
     await http(`/livros/${id}`, {
       credentials: 'include',
       method: 'DELETE',
+      next: {
+        tags: ['livros']
+      }
     });
   },
 
@@ -55,6 +77,9 @@ export const livrosApi = {
       method: 'PUT',
       credentials: 'include',
       body: data,
+      next: {
+        tags: ['livros']
+      }
     });
   },
 
@@ -62,6 +87,9 @@ export const livrosApi = {
     if (config.useMock) return mock.buscarPorId(id);
     return http<Livro>(`/livros/${id}`, {
       credentials: 'include',
+      next: {
+        tags: ['livros']
+      }
     });
   },
 
@@ -69,6 +97,9 @@ export const livrosApi = {
     if (config.useMock) return mock.buscarPorTitulo(titulo);
     return http<Livro>(`/livros/titulo/${titulo}`, {
       credentials: 'include',
+      next: {
+        tags: ['livros']
+      }
     });
   },
 
@@ -76,6 +107,9 @@ export const livrosApi = {
     if (config.useMock) return mock.buscarPorAutorNome(nome);
     return http<Livro[]>(`/livros/autor/${nome}`, {
       credentials: 'include',
+      next: {
+        tags: ['livros']
+      }
     });
   },
 
@@ -83,6 +117,9 @@ export const livrosApi = {
     if (config.useMock) return mock.buscarPorGeneroNome(nome);
     return http<Livro[]>(`/livros/genero/${nome}`, {
       credentials: 'include',
+      next: {
+        tags: ['livros']
+      }
     });
   },
 
@@ -90,6 +127,9 @@ export const livrosApi = {
     if (config.useMock) return mock.buscarPorEditoraNome(nome);
     return http<Livro[]>(`/livros/editora/${nome}`, {
       credentials: 'include',
+      next: {
+        tags: ['livros']
+      }
     });
   },
 };

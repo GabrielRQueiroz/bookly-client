@@ -51,6 +51,30 @@
     {
       "id": "13",
       "nome": "George Orwell"
+    },
+    {
+      "id": "1771262738177",
+      "nome": "C. S. Lewis"
+    },
+    {
+      "id": "1771263811098",
+      "nome": "Walter J. Maciel"
+    },
+    {
+      "id": "1771265247029",
+      "nome": "Brandon Sanderson"
+    },
+    {
+      "id": "1771271524856",
+      "nome": "Robert E. Howard"
+    },
+    {
+      "id": "1771271535194",
+      "nome": "Robert E. Howard"
+    },
+    {
+      "id": "1771290421523",
+      "nome": "Carambolas"
     }
   ],
   "editoras": [
@@ -120,6 +144,16 @@
       "id": "9",
       "nome": "Programação",
       "corHexa": "#33FF57"
+    },
+    {
+      "id": "1771265277975",
+      "nome": "Alta fantasia",
+      "corHexa": "#e69b32"
+    },
+    {
+      "id": "1771290445208",
+      "nome": "Holy moly",
+      "corHexa": "#f121fc"
     }
   ],
   "usuarios": [
@@ -210,7 +244,16 @@
           "id": "1771213545274",
           "role": "dono"
         }
-      ]
+      ],
+      "senha": "123456"
+    },
+    {
+      "id": "1771221788186",
+      "nome": "Samela",
+      "email": "samela@gmail.com",
+      "avatarUrl": null,
+      "estantes": [],
+      "senha": "123456"
     }
   ],
   "estantes": [
@@ -538,7 +581,277 @@
       "nome": "Quarto",
       "linhas": 4,
       "colunas": 4,
-      "livros": [],
+      "livros": [
+        {
+          "id": "1771270106886",
+          "titulo": "Mistborn 1",
+          "autores": [
+            {
+              "id": "1771265247029",
+              "nome": "Brandon Sanderson"
+            }
+          ],
+          "generos": [
+            {
+              "id": "2",
+              "nome": "Fantasia",
+              "corHexa": "#FFC133"
+            }
+          ],
+          "editora": {
+            "id": "1",
+            "nome": "Editora A"
+          },
+          "linha": 2,
+          "coluna": 2
+        },
+        {
+          "id": "1771270396364",
+          "titulo": "Elantris",
+          "autores": [
+            {
+              "id": "1771265247029",
+              "nome": "Brandon Sanderson"
+            }
+          ],
+          "generos": [
+            {
+              "id": "2",
+              "nome": "Fantasia",
+              "corHexa": "#FFC133"
+            }
+          ],
+          "editora": {
+            "id": "2",
+            "nome": "Editora B"
+          },
+          "coluna": 3,
+          "linha": 2
+        },
+        {
+          "id": "1771271315982",
+          "titulo": "Tress",
+          "autores": [
+            {
+              "id": "1771265247029",
+              "nome": "Brandon Sanderson"
+            }
+          ],
+          "generos": [
+            {
+              "id": "2",
+              "nome": "Fantasia",
+              "corHexa": "#FFC133"
+            }
+          ],
+          "editora": {
+            "id": "4",
+            "nome": "Editora D"
+          },
+          "coluna": 1,
+          "linha": 2
+        },
+        {
+          "id": "1771271550458",
+          "titulo": "Rei Kull",
+          "autores": [
+            {
+              "id": "11",
+              "nome": "Brad Smith"
+            }
+          ],
+          "generos": [
+            {
+              "id": "2",
+              "nome": "Fantasia",
+              "corHexa": "#FFC133"
+            }
+          ],
+          "editora": {
+            "id": "2",
+            "nome": "Editora B"
+          },
+          "coluna": 1,
+          "linha": 3
+        },
+        {
+          "id": "1771271589405",
+          "titulo": "Foobar",
+          "autores": [
+            {
+              "id": "1",
+              "nome": "J.K. Rowling"
+            }
+          ],
+          "generos": [
+            {
+              "id": "1",
+              "nome": "Ficção Científica",
+              "corHexa": "#33C1FF"
+            }
+          ],
+          "editora": {
+            "id": "1",
+            "nome": "Editora A"
+          },
+          "coluna": 1,
+          "linha": 3
+        },
+        {
+          "id": "1771289822555",
+          "titulo": "Teste",
+          "autores": [
+            {
+              "id": "2",
+              "nome": "George R.R. Martin"
+            }
+          ],
+          "generos": [
+            {
+              "id": "2",
+              "nome": "Fantasia",
+              "corHexa": "#FFC133"
+            }
+          ],
+          "editora": {
+            "id": "1",
+            "nome": "Editora A"
+          },
+          "coluna": 2,
+          "linha": 3
+        },
+        {
+          "id": "1771290459979",
+          "titulo": "Catapimbas",
+          "autores": [
+            {
+              "id": "2",
+              "nome": "George R.R. Martin"
+            }
+          ],
+          "generos": [
+            {
+              "id": "3",
+              "nome": "Mistério",
+              "corHexa": "#FF33A1"
+            }
+          ],
+          "editora": {
+            "id": "3",
+            "nome": "Editora C"
+          },
+          "coluna": 1,
+          "linha": 2
+        },
+        {
+          "id": "1771291553793",
+          "titulo": "Aasdasd",
+          "autores": [
+            {
+              "id": "1",
+              "nome": "J.K. Rowling"
+            },
+            {
+              "id": "2",
+              "nome": "George R.R. Martin"
+            },
+            {
+              "id": "3",
+              "nome": "J.R.R. Tolkien"
+            }
+          ],
+          "generos": [
+            {
+              "id": "2",
+              "nome": "Fantasia",
+              "corHexa": "#FFC133"
+            },
+            {
+              "id": "3",
+              "nome": "Mistério",
+              "corHexa": "#FF33A1"
+            }
+          ],
+          "editora": {
+            "id": "3",
+            "nome": "Editora C"
+          },
+          "coluna": 3,
+          "linha": 3
+        },
+        {
+          "id": "1771291568558",
+          "titulo": "asdasdasdas",
+          "autores": [
+            {
+              "id": "1",
+              "nome": "J.K. Rowling"
+            },
+            {
+              "id": "2",
+              "nome": "George R.R. Martin"
+            },
+            {
+              "id": "3",
+              "nome": "J.R.R. Tolkien"
+            }
+          ],
+          "generos": [
+            {
+              "id": "2",
+              "nome": "Fantasia",
+              "corHexa": "#FFC133"
+            },
+            {
+              "id": "3",
+              "nome": "Mistério",
+              "corHexa": "#FF33A1"
+            }
+          ],
+          "editora": {
+            "id": "3",
+            "nome": "Editora C"
+          },
+          "coluna": 3,
+          "linha": 3
+        },
+        {
+          "id": "1771291768912",
+          "titulo": "Cansei",
+          "autores": [
+            {
+              "id": "2",
+              "nome": "George R.R. Martin"
+            },
+            {
+              "id": "3",
+              "nome": "J.R.R. Tolkien"
+            },
+            {
+              "id": "4",
+              "nome": "Agatha Christie"
+            }
+          ],
+          "generos": [
+            {
+              "id": "2",
+              "nome": "Fantasia",
+              "corHexa": "#FFC133"
+            },
+            {
+              "id": "4",
+              "nome": "Romance",
+              "corHexa": "#FF3366"
+            }
+          ],
+          "editora": {
+            "id": "3",
+            "nome": "Editora C"
+          },
+          "coluna": 2,
+          "linha": 1
+        }
+      ],
       "donos": [
         {
           "id": "1771213522449",
@@ -701,6 +1014,255 @@
       "editora": {
         "id": "2",
         "nome": "Editora B"
+      }
+    },
+    {
+      "id": "1771270106886",
+      "titulo": "Mistborn 1",
+      "autores": [
+        {
+          "id": "1771265247029",
+          "nome": "Brandon Sanderson"
+        }
+      ],
+      "generos": [
+        {
+          "id": "2",
+          "nome": "Fantasia",
+          "corHexa": "#FFC133"
+        }
+      ],
+      "editora": {
+        "id": "1",
+        "nome": "Editora A"
+      }
+    },
+    {
+      "id": "1771270396364",
+      "titulo": "Elantris",
+      "autores": [
+        {
+          "id": "1771265247029",
+          "nome": "Brandon Sanderson"
+        }
+      ],
+      "generos": [
+        {
+          "id": "2",
+          "nome": "Fantasia",
+          "corHexa": "#FFC133"
+        }
+      ],
+      "editora": {
+        "id": "2",
+        "nome": "Editora B"
+      }
+    },
+    {
+      "id": "1771271315982",
+      "titulo": "Tress",
+      "autores": [
+        {
+          "id": "1771265247029",
+          "nome": "Brandon Sanderson"
+        }
+      ],
+      "generos": [
+        {
+          "id": "2",
+          "nome": "Fantasia",
+          "corHexa": "#FFC133"
+        }
+      ],
+      "editora": {
+        "id": "4",
+        "nome": "Editora D"
+      }
+    },
+    {
+      "id": "1771271550458",
+      "titulo": "Rei Kull",
+      "autores": [
+        {
+          "id": "11",
+          "nome": "Brad Smith"
+        }
+      ],
+      "generos": [
+        {
+          "id": "2",
+          "nome": "Fantasia",
+          "corHexa": "#FFC133"
+        }
+      ],
+      "editora": {
+        "id": "2",
+        "nome": "Editora B"
+      }
+    },
+    {
+      "id": "1771271589405",
+      "titulo": "Foobar",
+      "autores": [
+        {
+          "id": "1",
+          "nome": "J.K. Rowling"
+        }
+      ],
+      "generos": [
+        {
+          "id": "1",
+          "nome": "Ficção Científica",
+          "corHexa": "#33C1FF"
+        }
+      ],
+      "editora": {
+        "id": "1",
+        "nome": "Editora A"
+      }
+    },
+    {
+      "id": "1771289822555",
+      "titulo": "Teste",
+      "autores": [
+        {
+          "id": "2",
+          "nome": "George R.R. Martin"
+        }
+      ],
+      "generos": [
+        {
+          "id": "2",
+          "nome": "Fantasia",
+          "corHexa": "#FFC133"
+        }
+      ],
+      "editora": {
+        "id": "1",
+        "nome": "Editora A"
+      }
+    },
+    {
+      "id": "1771290459979",
+      "titulo": "Catapimbas",
+      "autores": [
+        {
+          "id": "2",
+          "nome": "George R.R. Martin"
+        }
+      ],
+      "generos": [
+        {
+          "id": "3",
+          "nome": "Mistério",
+          "corHexa": "#FF33A1"
+        }
+      ],
+      "editora": {
+        "id": "3",
+        "nome": "Editora C"
+      }
+    },
+    {
+      "id": "1771291553793",
+      "titulo": "Aasdasd",
+      "autores": [
+        {
+          "id": "1",
+          "nome": "J.K. Rowling"
+        },
+        {
+          "id": "2",
+          "nome": "George R.R. Martin"
+        },
+        {
+          "id": "3",
+          "nome": "J.R.R. Tolkien"
+        }
+      ],
+      "generos": [
+        {
+          "id": "2",
+          "nome": "Fantasia",
+          "corHexa": "#FFC133"
+        },
+        {
+          "id": "3",
+          "nome": "Mistério",
+          "corHexa": "#FF33A1"
+        }
+      ],
+      "editora": {
+        "id": "3",
+        "nome": "Editora C"
+      }
+    },
+    {
+      "id": "1771291568558",
+      "titulo": "asdasdasdas",
+      "autores": [
+        {
+          "id": "1",
+          "nome": "J.K. Rowling"
+        },
+        {
+          "id": "2",
+          "nome": "George R.R. Martin"
+        },
+        {
+          "id": "3",
+          "nome": "J.R.R. Tolkien"
+        }
+      ],
+      "generos": [
+        {
+          "id": "2",
+          "nome": "Fantasia",
+          "corHexa": "#FFC133"
+        },
+        {
+          "id": "3",
+          "nome": "Mistério",
+          "corHexa": "#FF33A1"
+        }
+      ],
+      "editora": {
+        "id": "3",
+        "nome": "Editora C"
+      }
+    },
+    {
+      "id": "1771291768912",
+      "titulo": "Cansei",
+      "autores": [
+        {
+          "id": "2",
+          "nome": "George R.R. Martin"
+        },
+        {
+          "id": "3",
+          "nome": "J.R.R. Tolkien"
+        },
+        {
+          "id": "4",
+          "nome": "Agatha Christie"
+        }
+      ],
+      "generos": [
+        {
+          "id": "2",
+          "nome": "Fantasia",
+          "corHexa": "#FFC133"
+        },
+        {
+          "id": "4",
+          "nome": "Romance",
+          "corHexa": "#FF3366"
+        }
+      ],
+      "editora": {
+        "id": "3",
+        "nome": "Editora C"
       }
     }
   ]

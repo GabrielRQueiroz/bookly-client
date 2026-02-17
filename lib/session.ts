@@ -48,7 +48,6 @@ export async function criarSessao(user: Usuario, token: string) {
     sameSite: 'lax',
     path: '/',
   });
-  console.log('Creating session for userId:', user);
 }
 
 export async function atualizarSessao() {

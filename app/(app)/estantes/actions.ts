@@ -21,16 +21,9 @@ export async function criarEstante(data: CriarEstanteInput) {
     });
     id = response.id;
   } catch (error: unknown) {
-    return {
-      notification: {
-        title: 'Não foi possível criar a estante',
-        message:
-          error instanceof Error
-            ? error.message
-            : 'Ocorreu um erro desconhecido',
-        color: 'red',
-      },
-    };
+    throw new Error(
+      error instanceof Error ? error.message : 'Erro ao criar estante',
+    );
   }
 
   revalidatePath('/estantes');

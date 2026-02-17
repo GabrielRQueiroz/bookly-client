@@ -7,6 +7,7 @@ import {
   NumberInput,
   TextInput,
 } from '@mantine/core';
+import { notifications } from '@mantine/notifications';
 import { useState, useTransition } from 'react';
 import { z } from 'zod';
 import { criarEstante } from '../actions';
@@ -46,13 +47,25 @@ export const FormularioEstantes = ({ onSucess }: { onSucess: () => void }) => {
       return;
     }
 
-    startTransition(() => {
-      criarEstante({
+    startTransition(async () => {
+      await criarEstante({
         nome,
         linhas: Number(fileiras),
         colunas: Number(colunas),
-      });
-      onSucess();
+      })
+        .catch((error: unknown) => {
+          notifications.show({
+            title: 'Não foi possível criar a estante',
+            message:
+              error instanceof Error
+                ? error.message
+                : 'Ocorreu um erro desconhecido',
+            color: 'red',
+          });
+        })
+        .then(() => {
+          onSucess();
+        });
     });
   };
 

@@ -4,7 +4,7 @@ import { decrypt } from '@/lib/session';
 import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
 import { cache } from 'react';
-import { usuariosApi } from './api';
+import { Api } from './api';
 import { SessionPayload } from './definitions';
 
 export const verificarSessao = cache(async () => {
@@ -24,7 +24,7 @@ export const getUsuario = cache(async () => {
   if (!session) return null;
 
   try {
-    const data = await usuariosApi.buscarPorId(session.user.id);
+    const data = await Api.usuarios.buscarPorId(session.user.id);
 
     return data || null;
   } catch (error) {

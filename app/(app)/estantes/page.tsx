@@ -1,12 +1,12 @@
 import { Layout, LayoutSection } from '@/components/Layout';
-import { estantesApi } from '@/lib/api';
+import { Api } from '@/lib/api';
 import { Estante } from '@/lib/api/estantes';
 import { getUsuario } from '@/lib/dal';
 import { CardEstante, CardEstanteNova } from './components/CardEstante';
 
 export default async function PaginaEstantes() {
   const user = await getUsuario();
-  const estantes: Estante[] = await estantesApi.listar();
+  const estantes: Estante[] = await Api.estantes.listar();
 
   const owned = estantes.filter((e) => e.donos.some((d) => d.id === user?.id));
   const invited = estantes.filter((e) =>

@@ -1,12 +1,12 @@
 import { Layout, LayoutSection } from '@/components/Layout';
-import { Livro, livrosApi } from '@/lib/api';
+import { Livro, Api } from '@/lib/api';
 import { getUsuario } from '@/lib/dal';
 import { List, ListItem } from '@mantine/core';
 
 export default async function PaginaLivros() {
   const usuario = await getUsuario();
-  const livros: Livro[] = await livrosApi.listarSeus();
-  const outros: Livro[] = await livrosApi.listarDeOutros();
+  const livros: Livro[] = await Api.livros.listarSeus();
+  const outros: Livro[] = await Api.livros.listarDeOutros();
 
   return (
     <Layout titulo="Livros">

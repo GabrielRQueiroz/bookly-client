@@ -1,7 +1,7 @@
 import { GridEstante } from '@/app/(app)/estantes/components/GridEstante';
 import { ListaEstante } from '@/app/(app)/estantes/components/ListaEstante';
 import { BotaoVoltar } from '@/components/BotaoVoltar';
-import { Estante, estantesApi } from '@/lib/api';
+import { Api, Estante } from '@/lib/api';
 import { getUsuario } from '@/lib/dal';
 import { getNicho } from '@/lib/utils';
 import { Group, Title } from '@mantine/core';
@@ -17,7 +17,7 @@ export default async function PaginaEstante({
 }) {
   const { slug } = await params;
   const usuario = await getUsuario();
-  const estante: Estante | undefined = await estantesApi.buscarPorId(slug);
+  const estante: Estante | undefined = await Api.estantes.buscarPorId(slug);
   const dono = estante?.donos.some((d) => d.id === usuario?.id) ?? false;
 
   if (!estante) {

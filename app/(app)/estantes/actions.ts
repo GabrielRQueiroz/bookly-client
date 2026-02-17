@@ -1,6 +1,6 @@
 'use server';
 
-import { estantesApi } from '@/lib/api';
+import { Api } from '@/lib/api';
 import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
 
@@ -13,7 +13,7 @@ type CriarEstanteInput = {
 export async function criarEstante(data: CriarEstanteInput) {
   let id;
   try {
-    const response = await estantesApi.criar({
+    const response = await Api.estantes.criar({
       nome: data.nome,
       linhas: data.linhas,
       colunas: data.colunas,

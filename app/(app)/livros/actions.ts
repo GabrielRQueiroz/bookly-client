@@ -1,6 +1,6 @@
 'use server';
 
-import { livrosApi } from '@/lib/api';
+import { Api } from '@/lib/api';
 import { CriarLivro } from '@/lib/api/livros';
 import { updateTag } from 'next/cache';
 import { redirect } from 'next/navigation';
@@ -42,7 +42,7 @@ export const cadastrarLivro = async (
       delete livro.estante;
     }
 
-    await livrosApi.criar({
+    await Api.livros.criar({
       ...livro,
     });
 

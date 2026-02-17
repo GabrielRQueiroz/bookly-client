@@ -1,6 +1,6 @@
 'use server';
 
-import { usuariosApi } from '@/lib/api';
+import { Api } from '@/lib/api';
 import { criarSessao, excluirSessao } from '@/lib/session';
 import { redirect } from 'next/navigation';
 import z from 'zod';
@@ -66,7 +66,7 @@ export async function registrar(previousState: any, formData: FormData) {
   let response;
 
   try {
-    response = await usuariosApi.criar(
+    response = await Api.usuarios.criar(
       camposValidados.data.apelido,
       camposValidados.data.email,
       camposValidados.data.senha,
@@ -119,7 +119,7 @@ export async function login(
 
   let response;
   try {
-    const res = await usuariosApi.login(email, senha);
+    const res = await Api.usuarios.login(email, senha);
     response = res;
   } catch (error) {
     return {

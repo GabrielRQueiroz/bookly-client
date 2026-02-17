@@ -4,6 +4,7 @@ import { SignJWT, jwtVerify } from 'jose';
 import { cookies } from 'next/headers';
 
 import { SessionPayload } from '@/lib/definitions';
+import { Usuario } from './api';
 
 const secretKey = process.env.SESSION_SECRET;
 const encodedKey = new TextEncoder().encode(secretKey);
@@ -28,7 +29,7 @@ export async function decrypt(session: string | undefined = '') {
 }
 
 export async function criarSessao(
-  user: SessionPayload['user'],
+  user: SessionPayload['user'] | Usuario,
   token: SessionPayload['token'],
   refreshToken: SessionPayload['refreshToken'],
 ) {

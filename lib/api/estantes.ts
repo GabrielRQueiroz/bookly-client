@@ -20,11 +20,11 @@ export type Estante = {
 export const estantesApi = {
   listar: async (): Promise<Estante[]> => {
     if (config.useMock) return mock.listar();
-    return http<Estante[]>(`/estantes`, {
+    return http<Estante[]>(`/estante`, {
       credentials: 'include',
       next: {
-        tags: ['estantes']
-      }
+        tags: ['estantes'],
+      },
     });
   },
 
@@ -32,23 +32,23 @@ export const estantesApi = {
     data: Omit<Estante, 'id' | 'donos' | 'membros'>,
   ): Promise<Estante> => {
     if (config.useMock) return mock.criar(data);
-    return http<Estante>('/estantes', {
+    return http<Estante>('/estante', {
       method: 'POST',
       body: data,
       credentials: 'include',
       next: {
-        tags: ['estantes']
-      }
+        tags: ['estantes'],
+      },
     });
   },
 
   buscarPorId: async (id: string): Promise<Estante | undefined> => {
     if (config.useMock) return mock.buscarPorId(id);
-    return http<Estante>(`/estantes/${id}`, {
+    return http<Estante>(`/estante/${id}`, {
       credentials: 'include',
       next: {
-        tags: ['estantes']
-      }
+        tags: ['estantes'],
+      },
     });
   },
 
@@ -57,24 +57,24 @@ export const estantesApi = {
     data: Omit<Estante, 'id'>,
   ): Promise<Estante> => {
     if (config.useMock) return mock.atualizar(id, data);
-    return http<Estante>(`/estantes/${id}`, {
+    return http<Estante>(`/estante/${id}`, {
       method: 'PUT',
       credentials: 'include',
       body: data,
       next: {
-        tags: ['estantes']
-      }
+        tags: ['estantes'],
+      },
     });
   },
 
   remover: async (id: string): Promise<void> => {
     if (config.useMock) return mock.remover(id);
-    await http(`/estantes/${id}`, {
+    await http(`/estante/${id}`, {
       method: 'DELETE',
       credentials: 'include',
       next: {
-        tags: ['estantes']
-      }
+        tags: ['estantes'],
+      },
     });
   },
 };

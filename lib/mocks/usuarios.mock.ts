@@ -15,7 +15,7 @@ export async function getUsuario(): Promise<Usuario | null> {
 export async function login(
   email: string,
   senha: string,
-): Promise<{ user: Usuario; accessToken: string }> {
+): Promise<{ user: Usuario; accessToken: string; refreshToken: string }> {
   await delay();
   const db = await readDb();
   const usuario = db.usuarios.find(
@@ -25,14 +25,18 @@ export async function login(
     throw new ApiError('Credenciais inválidas', 401);
   }
   const { senha: _, ...resto } = usuario;
-  return { user: resto, accessToken: 'fake-token' };
+  return {
+    user: resto,
+    accessToken: 'fake-token',
+    refreshToken: 'fake-refresh-token',
+  };
 }
 
 export async function criar(
   nome: string,
   email: string,
   senha: string,
-): Promise<{ user: Usuario; accessToken: string }> {
+): Promise<{ user: Usuario; accessToken: string; refreshToken: string }> {
   await delay();
   const db = await readDb();
   const novo = {
@@ -45,7 +49,7 @@ export async function criar(
   };
   db.usuarios.push(novo);
   await writeDb(db);
-  return { user: novo, accessToken: 'fake-token' };
+  return { user: novo, accessToken: 'fake-token', refreshToken: 'fake-refresh-token' };
 }
 
 export async function listar(): Promise<Usuario[]> {

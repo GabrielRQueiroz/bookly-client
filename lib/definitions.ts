@@ -12,7 +12,9 @@ export type SessionPayload = {
     id: string;
     nome: string;
     email: string;
+    avatarUrl?: string;
   };
   token: string;
+  refreshToken: string;
   expiresAt: Date;
 };

@@ -9,6 +9,22 @@ import { Usuario } from './api';
 const secretKey = process.env.SESSION_SECRET;
 const encodedKey = new TextEncoder().encode(secretKey);
 
+export async function armazenarToken(token: string) {
+  const cookieStore = await cookies();
+
+  cookieStore.set('token', token, {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === 'production',
+    expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
+    sameSite: 'lax',
+  });
+}
+
+export async function obterToken() {
+  const cookieStore = await cookies();
+  return cookieStore.get('token')?.value;
+}
+
 export async function encrypt(payload: SessionPayload) {
   return new SignJWT(payload)
     .setProtectedHeader({ alg: 'HS256' })
@@ -28,15 +44,21 @@ export async function decrypt(session: string | undefined = '') {
   }
 }
 
-export async function criarSessao(user: Usuario, token: string) {
+export async function criarSessao(
+  user: Usuario,
+  token: string,
+  refreshToken: string,
+) {
   const expiresAt = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000);
   const session = await encrypt({
     user: {
       id: user.id,
       email: user.email,
       nome: user.nome,
+      avatarUrl: user.avatarUrl ?? undefined,
     },
     token: token,
+    refreshToken: refreshToken,
     expiresAt,
   });
   const cookieStore = await cookies();

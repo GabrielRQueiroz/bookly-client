@@ -17,21 +17,32 @@ export const usuariosApi = {
   login: async (
     email: string,
     senha: string,
-  ): Promise<{ user: Usuario; accessToken: string }> => {
+  ): Promise<{ user: Usuario; accessToken: string; refreshToken: string }> => {
     if (config.useMock) return mock.login(email, senha);
-    return http<{ user: Usuario; accessToken: string }>('auth/login', {
-      method: 'POST',
-      body: { email, senha },
-    });
+    return http<{ user: Usuario; accessToken: string; refreshToken: string }>(
+      'auth/login',
+      {
+        method: 'POST',
+        body: { email, senha },
+      },
+    );
   },
 
   criar: async (
     nome: string,
     email: string,
     senha: string,
-  ): Promise<{ user: Usuario; accessToken: string }> => {
+  ): Promise<{
+    user: Usuario;
+    accessToken: string;
+    refreshToken: string;
+  }> => {
     if (config.useMock) return mock.criar(nome, email, senha);
-    return http<{ user: Usuario; accessToken: string }>('auth/registrar', {
+    return http<{
+      user: Usuario;
+      accessToken: string;
+      refreshToken: string;
+    }>('auth/registrar', {
       method: 'POST',
       body: { nome, email, senha },
     });

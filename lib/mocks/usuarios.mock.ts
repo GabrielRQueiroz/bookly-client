@@ -15,7 +15,7 @@ export async function getUsuario(): Promise<Usuario | null> {
 export async function login(
   email: string,
   senha: string,
-): Promise<{ user: Usuario; accessToken: string; refreshToken: string }> {
+): Promise<{ usuario: Usuario; access_token: string; refresh_token: string }> {
   await delay();
   const db = await readDb();
   const usuario = db.usuarios.find(
@@ -26,9 +26,9 @@ export async function login(
   }
   const { senha: _, ...resto } = usuario;
   return {
-    user: resto,
-    accessToken: 'fake-token',
-    refreshToken: 'fake-refresh-token',
+    usuario: resto,
+    access_token: 'fake-token',
+    refresh_token: 'fake-refresh-token',
   };
 }
 
@@ -36,7 +36,7 @@ export async function criar(
   nome: string,
   email: string,
   senha: string,
-): Promise<{ user: Usuario; accessToken: string; refreshToken: string }> {
+): Promise<{ usuario: Usuario; access_token: string; refresh_token: string }> {
   await delay();
   const db = await readDb();
   const novo = {
@@ -49,7 +49,11 @@ export async function criar(
   };
   db.usuarios.push(novo);
   await writeDb(db);
-  return { user: novo, accessToken: 'fake-token', refreshToken: 'fake-refresh-token' };
+  return {
+    usuario: novo,
+    access_token: 'fake-token',
+    refresh_token: 'fake-refresh-token',
+  };
 }
 
 export async function listar(): Promise<Usuario[]> {

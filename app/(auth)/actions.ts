@@ -90,7 +90,7 @@ export async function registrar(previousState: any, formData: FormData) {
     };
   }
 
-  await criarSessao(response.user, response.accessToken, response.refreshToken);
+  await criarSessao(response.usuario, response.access_token, response.refresh_token);
 
   redirect('/');
 }
@@ -136,7 +136,7 @@ export async function login(
     };
   }
 
-  await criarSessao(response.user, response.accessToken, response.refreshToken);
+  await criarSessao(response.usuario, response.access_token, response.refresh_token);
 
   redirect('/');
 }

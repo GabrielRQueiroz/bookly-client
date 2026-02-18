@@ -10,7 +10,7 @@ export type Usuario = {
   avatarUrl: string | null;
   estantes: {
     id: string;
-    role: 'dono' | 'membro';
+    cargo: 'dono' | 'membro';
   }[];
 };
 

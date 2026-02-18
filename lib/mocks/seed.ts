@@ -119,8 +119,8 @@ const usuariosMock = (): (Usuario & { senha: string })[] => [
     email: 'alice@example.com',
     avatarUrl: '',
     estantes: [
-      { id: '1', role: 'dono' },
-      { id: '2', role: 'membro' },
+      { id: '1', cargo: 'dono' },
+      { id: '2', cargo: 'membro' },
     ],
     senha: '123456',
   },
@@ -132,11 +132,11 @@ const usuariosMock = (): (Usuario & { senha: string })[] => [
     estantes: [
       {
         id: '1',
-        role: 'membro',
+        cargo: 'membro',
       },
       {
         id: '2',
-        role: 'dono',
+        cargo: 'dono',
       },
     ],
     senha: '123456',
@@ -146,7 +146,7 @@ const usuariosMock = (): (Usuario & { senha: string })[] => [
     nome: 'Charlie',
     email: 'charlie@example.com',
     avatarUrl: '',
-    estantes: [{ id: '1', role: 'membro' }],
+    estantes: [{ id: '1', cargo: 'membro' }],
     senha: '123456',
   },
   {
@@ -154,7 +154,7 @@ const usuariosMock = (): (Usuario & { senha: string })[] => [
     nome: 'Diana',
     email: 'diana@example.com',
     avatarUrl: '',
-    estantes: [{ id: '1', role: 'membro' }],
+    estantes: [{ id: '1', cargo: 'membro' }],
     senha: '123456',
   },
   {
@@ -162,7 +162,7 @@ const usuariosMock = (): (Usuario & { senha: string })[] => [
     nome: 'Eve',
     email: 'eve@example.com',
     avatarUrl: '',
-    estantes: [{ id: '1', role: 'membro' }],
+    estantes: [{ id: '1', cargo: 'membro' }],
     senha: '123456',
   },
 ];
@@ -229,12 +229,14 @@ const livrosMock = (
 const estantesMock = (usuarios: Usuario[], livros: Livro[]): Estante[] => [
   {
     id: '1',
-    donos: usuarios.filter((u) =>
-      u.estantes.some((e) => e.id === '1' && e.role === 'dono'),
-    ),
-    membros: usuarios.filter((u) =>
-      u.estantes.some((e) => e.id === '1' && e.role === 'membro'),
-    ),
+    usuarios: [
+      ...usuarios.filter((u) =>
+        u.estantes.some((e) => e.id === '1' && e.cargo === 'dono'),
+      ).map(u => ({...u, cargo: "dono"})),
+      ...usuarios.filter((u) =>
+        u.estantes.some((e) => e.id === '1' && e.cargo === 'membro'),
+      ).map(u => ({...u, cargo: "membro"})),
+    ],
     nome: 'Estante da Sala',
     linhas: 4,
     colunas: 5,
@@ -248,12 +250,14 @@ const estantesMock = (usuarios: Usuario[], livros: Livro[]): Estante[] => [
   },
   {
     id: '2',
-    donos: usuarios.filter((u) =>
-      u.estantes.some((e) => e.id === '2' && e.role === 'dono'),
-    ),
-    membros: usuarios.filter((u) =>
-      u.estantes.some((e) => e.id === '2' && e.role === 'membro'),
-    ),
+    usuarios: [
+      ...usuarios.filter((u) =>
+        u.estantes.some((e) => e.id === '2' && e.cargo === 'dono'),
+      ).map(u => ({...u, cargo: "dono"})),
+      ...usuarios.filter((u) =>
+        u.estantes.some((e) => e.id === '2' && e.cargo === 'membro'),
+      ).map(u => ({...u, cargo: "membro"})),
+    ],
     nome: 'Estante da Cozinha',
     linhas: 3,
     colunas: 4,

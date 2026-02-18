@@ -13,8 +13,8 @@ export async function listarMeus(): Promise<Livro[]> {
   const db = await readDb();
   const estantes = db.estantes.filter(
     (e: Estante) =>
-      e.donos.some((d: Usuario) => d.id === user?.id) &&
-      !e.membros.some((m: Usuario) => m.id === user?.id),
+      e.usuarios.filter(u => u.cargo.toLowerCase() === "dono").some((d: Usuario) => d.id === user?.id) &&
+      !e.usuarios.filter(u => u.cargo.toLowerCase() === "membro").some((m: Usuario) => m.id === user?.id),
   );
   const livros: Livro[] = [];
   estantes.forEach((e: Estante) => {
@@ -31,8 +31,8 @@ export async function listarOutros(): Promise<Livro[]> {
   const db = await readDb();
   const estantes = db.estantes.filter(
     (e: Estante) =>
-      e.membros.some((m: Usuario) => m.id === user?.id) &&
-      !e.donos.some((d: Usuario) => d.id === user?.id),
+      e.usuarios.filter(u => u.cargo.toLowerCase() === "membro").some((m: Usuario) => m.id === user?.id) &&
+      !e.usuarios.filter(u => u.cargo.toLowerCase() === "dono").some((d: Usuario) => d.id === user?.id),
   );
   const livros: Livro[] = [];
   estantes.forEach((e: Estante) => {

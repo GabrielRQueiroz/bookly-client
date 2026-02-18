@@ -19,9 +19,9 @@ export type Estante = {
 };
 
 export const estantesApi = {
-  listar: async (): Promise<Estante[]> => {
+  listar: async (): Promise<{dono: Estante[], convidado: Estante[]}> => {
     if (config.useMock) return mock.listar();
-    return http<Estante[]>(`/estante`, {
+    return http<{dono: Estante[], convidado: Estante[]}>(`/estante`, {
       credentials: 'include',
       headers: {
         authorization: `Bearer ${await getAccessToken()}`,

@@ -18,7 +18,6 @@ export async function handleHttpError(response: Response) {
   switch (response.status) {
     case 401:
       console.warn('Não autenticado');
-      globalThis.location.href = '/login';
       break;
 
     case 403:

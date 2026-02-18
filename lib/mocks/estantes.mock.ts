@@ -8,15 +8,21 @@ import { getUsuario } from './usuarios.mock';
 
 const delay = () => new Promise((r) => setTimeout(r, 400));
 
-export const listar = async (): Promise<Estante[]> => {
+export const listar = async (): Promise<{
+  dono: Estante[];
+  convidado: Estante[];
+}> => {
   await delay();
   const user = await getUsuario();
   const db = await readDb();
-  return db.estantes.filter(
-    (e: Estante) =>
-      e.donos.some((d) => d.id === user?.id) ||
+  return {
+    dono: db.estantes.filter((e: Estante) =>
+      e.donos.some((d) => d.id === user?.id),
+    ),
+    convidado: db.estantes.filter((e: Estante) =>
       e.membros.some((m) => m.id === user?.id),
-  );
+    ),
+  };
 };
 
 export const criar = async (

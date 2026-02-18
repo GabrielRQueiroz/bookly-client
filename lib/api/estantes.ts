@@ -60,9 +60,9 @@ export const estantesApi = {
     });
   },
 
-  buscarPorId: async (id: string): Promise<Estante | undefined> => {
+  buscarPorId: async (id: string): Promise<Estante & {cargo: "DONO"|"MEMBRO"} | undefined> => {
     if (config.useMock) return mock.buscarPorId(id);
-    return http<Estante>(`/estante/${id}`, {
+    return http<Estante & {cargo: "DONO"|"MEMBRO"}>(`/estante/${id}`, {
       credentials: 'include',
       headers: {
         authorization: `Bearer ${await getAccessToken()}`,

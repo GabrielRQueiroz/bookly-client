@@ -19,13 +19,11 @@ import { useEstanteContext } from '../contexts/EstanteContext';
 
 type ShelfGridProps = {
   estante: Estante;
-  dono: boolean;
   onCellClick?: (linha: number, coluna: number) => void;
 };
 
 export const GridEstante = ({
   estante,
-  dono = false,
   onCellClick,
 }: ShelfGridProps) => {
   const [active, setActive] = useState<string | null>(null);

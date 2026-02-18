@@ -2,7 +2,6 @@ import { GridEstante } from '@/app/(app)/estantes/components/GridEstante';
 import { ListaEstante } from '@/app/(app)/estantes/components/ListaEstante';
 import { BotaoVoltar } from '@/components/BotaoVoltar';
 import { Api, Estante } from '@/lib/api';
-import { getUsuario } from '@/lib/dal';
 import { getNicho } from '@/lib/utils';
 import { Container, Group, Title } from '@mantine/core';
 import { AcoesEstante } from '../components/AcoesEstante';
@@ -16,12 +15,9 @@ export default async function PaginaEstante({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-  const usuario = await getUsuario();
-  const estante: Estante | undefined = await Api.estantes.buscarPorId(slug);
-  const dono =
-    estante?.usuarios.some(
-      (u) => u.id === usuario?.id && u.cargo.toUpperCase() === 'DONO',
-    ) ?? false;
+  const estante: (Estante & { cargo: 'DONO' | 'MEMBRO' }) | undefined =
+    await Api.estantes.buscarPorId(slug);
+  const dono = estante?.cargo.toUpperCase() === 'DONO';
 
   if (!estante) {
     return null;
@@ -58,7 +54,7 @@ export default async function PaginaEstante({
           {dono && <AcoesEstante estante={estante} />}
         </Group>
 
-        <GridEstante estante={estante} dono={dono} />
+        <GridEstante estante={estante} />
 
         {dono && <AcoesNicho estanteId={estante.id} />}
 

@@ -2,7 +2,6 @@
 
 import { BotaoVoltar } from '@/components/BotaoVoltar';
 import { Card } from '@mantine/core';
-import { redirect } from 'next/navigation';
 import { FormularioEstantes } from '../components/FormularioEstantes';
 
 export default function PaginaNovaEstante() {
@@ -12,7 +11,7 @@ export default function PaginaNovaEstante() {
       <h1 className="text-2xl font-bold mb-6">Nova Estante</h1>
 
       <Card shadow="sm" padding="lg" radius="md">
-        <FormularioEstantes onSucess={() => redirect('/estantes')} />
+        <FormularioEstantes />
       </Card>
     </div>
   );

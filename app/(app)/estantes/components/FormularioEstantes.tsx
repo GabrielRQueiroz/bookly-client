@@ -18,7 +18,7 @@ const schema = z.object({
   colunas: z.number().min(1, 'Mínimo 1 coluna').max(50, 'Máximo 50 colunas'),
 });
 
-export const FormularioEstantes = ({ onSucess }: { onSucess: () => void }) => {
+export const FormularioEstantes = ({ onSucess = () => {} }: { onSucess?: () => void }) => {
   const [nome, setNome] = useState('');
   const [fileiras, setFileiras] = useState<number | string>(1);
   const [colunas, setColunas] = useState<number | string>(1);
@@ -54,6 +54,9 @@ export const FormularioEstantes = ({ onSucess }: { onSucess: () => void }) => {
         colunas: Number(colunas),
         livros: []
       })
+        .then(() => {
+          onSucess();
+        })
         .catch((error: unknown) => {
           notifications.show({
             title: 'Não foi possível criar a estante',
@@ -64,9 +67,6 @@ export const FormularioEstantes = ({ onSucess }: { onSucess: () => void }) => {
             color: 'red',
           });
         })
-        .then(() => {
-          onSucess();
-        });
     });
   };
 

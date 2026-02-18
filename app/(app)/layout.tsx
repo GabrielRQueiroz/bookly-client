@@ -5,7 +5,7 @@ export default function Layout({ children }: { children: ReactNode }) {
   return (
     <>
       <Sidebar />
-      <main className="w-full h-fit p-6 max-w-5xl mx-auto">{children}</main>
+      <main className="w-full h-fit py-6 max-w-5xl mx-auto">{children}</main>
     </>
   );
 }

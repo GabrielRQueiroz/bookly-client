@@ -41,8 +41,12 @@ export const CardEstante = ({
           readOnly
           tooltipDirection="bottom"
           usuarios={{
-            donos: estante.donos,
-            membros: estante.membros,
+            donos: estante.usuarios.filter(
+              (u) => u.cargo.toUpperCase() === 'DONO',
+            ),
+            membros: estante.usuarios.filter(
+              (u) => u.cargo.toUpperCase() === 'MEMBRO',
+            ),
           }}
         />
       </Group>

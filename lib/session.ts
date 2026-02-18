@@ -24,8 +24,7 @@ export async function decrypt(session: string | undefined = '') {
     });
     return payload;
   } catch (error) {
-    console.log(session);
-    console.log('Falha ao verificar sessão', error);
+    console.log('Falha ao verificar sessão ' + session, error);
   }
 }
 

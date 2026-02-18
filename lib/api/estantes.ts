@@ -7,21 +7,31 @@ import { Livro } from './livros';
 
 export type Estante = {
   id: string;
-  donos: Usuario[];
-  membros: Usuario[];
   nome: string;
   linhas: number;
   colunas: number;
+  usuarios: (Usuario & {cargo: string})[];
   livros: (Livro & {
     linha: number;
     coluna: number;
   })[];
 };
 
+export type ListaEstantes = {
+  dono: Estante[];
+  convidado: Estante[];
+}
+
+export type CriarEstanteInput = {
+  nome: string;
+  linhas: number;
+  colunas: number;
+};
+
 export const estantesApi = {
-  listar: async (): Promise<{dono: Estante[], convidado: Estante[]}> => {
+  listar: async (): Promise<ListaEstantes> => {
     if (config.useMock) return mock.listar();
-    return http<{dono: Estante[], convidado: Estante[]}>(`/estante`, {
+    return http<ListaEstantes>(`/estante`, {
       credentials: 'include',
       headers: {
         authorization: `Bearer ${await getAccessToken()}`,
@@ -33,7 +43,7 @@ export const estantesApi = {
   },
 
   criar: async (
-    data: Omit<Estante, 'id' | 'donos' | 'membros'>,
+    data: CriarEstanteInput,
   ): Promise<Estante> => {
     if (config.useMock) return mock.criar(data);
     return http<Estante>('/estante', {

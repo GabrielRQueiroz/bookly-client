@@ -1,32 +1,29 @@
 'use server';
 
 import { Usuario } from '../api';
-import { Estante } from '../api/estantes';
+import { CriarEstanteInput, Estante, ListaEstantes } from '../api/estantes';
 import { ApiError } from '../errors';
 import { readDb, writeDb } from './db';
 import { getUsuario } from './usuarios.mock';
 
 const delay = () => new Promise((r) => setTimeout(r, 400));
 
-export const listar = async (): Promise<{
-  dono: Estante[];
-  convidado: Estante[];
-}> => {
+export const listar = async (): Promise<ListaEstantes> => {
   await delay();
   const user = await getUsuario();
   const db = await readDb();
   return {
     dono: db.estantes.filter((e: Estante) =>
-      e.donos.some((d) => d.id === user?.id),
+      e.usuarios.filter((u) => u.cargo.toUpperCase() === "DONO").some((d) => d.id === user?.id),
     ),
     convidado: db.estantes.filter((e: Estante) =>
-      e.membros.some((m) => m.id === user?.id),
+      e.usuarios.filter((u) => u.cargo.toUpperCase() === "MEMBRO").some((m) => m.id === user?.id),
     ),
   };
 };
 
 export const criar = async (
-  data: Omit<Estante, 'id' | 'donos' | 'membros'>,
+  data: CriarEstanteInput
 ): Promise<Estante> => {
   await delay();
   const user = await getUsuario();
@@ -36,13 +33,18 @@ export const criar = async (
   const nova = {
     id: Date.now().toString(),
     ...data,
-    donos: [userDb],
-    membros: [],
+    usuarios: [
+      {
+        ...userDb,
+        cargo: 'DONO',
+      },
+    ],
+    livros: [],
   };
   db.estantes.push(nova);
   db.usuarios = db.usuarios.map((u: Usuario) => {
     if (u.id === user?.id) {
-      return { ...u, estantes: [...u.estantes, { id: nova.id, role: 'dono' }] };
+      return { ...u, estantes: [...u.estantes, { id: nova.id, cargo: 'DONO' }] };
     }
     return u;
   });
@@ -57,8 +59,7 @@ export const buscarPorId = async (id: string): Promise<Estante | undefined> => {
   const estante = db.estantes.find(
     (e: Estante) =>
       e.id === id &&
-      (e.donos.some((d) => d.id === user?.id) ||
-        e.membros.some((m) => m.id === user?.id)),
+      e.usuarios.some((u) => u.id === user?.id),
   );
 
   if (!estante) {
@@ -77,7 +78,7 @@ export const atualizar = async (
   const db = await readDb();
   const index = db.estantes.findIndex(
     (e: Estante) =>
-      e.id === id && e.donos.some((m: Usuario) => m.id === user?.id),
+      e.id === id && e.usuarios.some((u) => u.id === user?.id && u.cargo.toUpperCase() === "DONO"),
   );
   if (index === -1) {
     throw new ApiError('Estante não encontrada', 400);
@@ -94,7 +95,7 @@ export const remover = async (id: string): Promise<void> => {
   const db = await readDb();
   const index = db.estantes.findIndex(
     (e: Estante) =>
-      e.id === id && e.donos.some((m: Usuario) => m.id === user?.id),
+      e.id === id && e.usuarios.some((u) => u.id === user?.id && u.cargo.toUpperCase() === "DONO"),
   );
   if (index !== -1) {
     db.estantes.splice(index, 1);

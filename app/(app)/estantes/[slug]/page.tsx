@@ -18,8 +18,8 @@ export default async function PaginaEstante({
   const { slug } = await params;
   const usuario = await getUsuario();
   const estante: Estante | undefined = await Api.estantes.buscarPorId(slug);
-  const dono = estante?.donos.some((d) => d.id === usuario?.id) ?? false;
-
+  const dono = estante?.usuarios.some((u) => u.id === usuario?.id && u.cargo.toUpperCase() === "DONO") ?? false;
+  
   if (!estante) {
     return null;
   }
@@ -43,8 +43,8 @@ export default async function PaginaEstante({
         </Title>
         <MembrosEstante
           usuarios={{
-            donos: estante.donos,
-            membros: estante.membros,
+            donos: estante.usuarios.filter((u) => u.cargo.toUpperCase() === "DONO"),
+            membros: estante.usuarios.filter((u) => u.cargo.toUpperCase() === "MEMBRO"),
           }}
         />
         {dono && <AcoesEstante estante={estante} />}

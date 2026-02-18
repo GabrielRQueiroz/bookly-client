@@ -26,6 +26,7 @@ export type CriarEstanteInput = {
   nome: string;
   linhas: number;
   colunas: number;
+  livros: string[];
 };
 
 export const estantesApi = {

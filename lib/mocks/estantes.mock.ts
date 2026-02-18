@@ -32,7 +32,6 @@ export const criar = async (
   console.log(userDb);
   const nova: Estante = {
     id: Date.now().toString(),
-    livros: [],
     ...data,
     usuarios: [
       {
@@ -40,6 +39,7 @@ export const criar = async (
         cargo: 'DONO',
       },
     ],
+    livros: [],
   };
   db.estantes.push(nova);
   db.usuarios = db.usuarios.map((u: Usuario) => {

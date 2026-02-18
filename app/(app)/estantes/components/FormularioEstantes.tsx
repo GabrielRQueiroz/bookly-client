@@ -52,6 +52,7 @@ export const FormularioEstantes = ({ onSucess }: { onSucess: () => void }) => {
         nome,
         linhas: Number(fileiras),
         colunas: Number(colunas),
+        livros: []
       })
         .catch((error: unknown) => {
           notifications.show({
